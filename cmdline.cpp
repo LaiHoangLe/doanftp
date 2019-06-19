@@ -212,7 +212,7 @@ void doRmd(char* cmd_argv[], int cmd_argc)
         }
     recv_ftp_response();
 }
-//
+
 void doCwd(char* cmd_argv[], int cmd_argc)
 {
     if(cmd_argc == 2)
@@ -222,24 +222,28 @@ void doCwd(char* cmd_argv[], int cmd_argc)
             printf("Chua ket noi toi Server!\n");
             return;
         }
-        send_2_message(cmd_argv[0], cmd_argv[1]);
+        send_2_message("cwd", cmd_argv[1]);
         recv_ftp_response();
     }else{
         printf("Tham so khong hop le!\n");
     }
-
 }
-void doEpsv(char* cmd_argv[], int cmd_argc)
+void doPwd(char* cmd_argv[], int cmd_argc)
 {
-    if(cmd_argc==1)
+    if(cmd_argc == 1)
     {
-        send_1_message(cmd_argv[0]);
+        if(is_connected()== false)
+        {
+            printf("Chua ket noi toi Server!\n");
+            return;
+        }
+        send_1_message("pwd");
         recv_ftp_response();
-    }
-    else{
+    }else{
         printf("Tham so khong hop le!\n");
     }
 }
+
 // ham download file tu server
 void doRetr(char* cmd_argv[], int cmd_argc)
 {
@@ -274,8 +278,15 @@ void doList(char* cmd_argv[], int cmd_argc)
 {
     if(cmd_argc==1)
     {
-        char msg[] = "ls";
+        char msg[] = "epsv";
         send_1_message(msg);
+        int tmp = recv_ftp_response();
+        if (tmp!=0){
+            return;
+        }
+        send_2_message("TCP","ACK");
+        recv_ftp_response();
+        send_1_message("nlst");
         recv_ftp_response();
     }else{
         printf("Tham so khong hop le!\n");
@@ -310,14 +321,14 @@ void doCmd(cmd_id id, char * cmd_argv[], int cmd_argc)
         case open: doOpen(cmd_argv, cmd_argc);break; //done
         case user: doUser(cmd_argv, cmd_argc);break; //done
         //case pass: doPass(cmd_argv, cmd_argc);break;
-        case disconnect: doDis(cmd_argv, cmd_argc);break;
+        case disconnect: doDis(cmd_argv, cmd_argc);break; //done
+        case cd: doCwd(cmd_argv, cmd_argc);break; //done
+        case pwd: doPwd(cmd_argv, cmd_argc);break; //done
         case mkd: doMkd(cmd_argv, cmd_argc);break;
         case rmd: doRmd(cmd_argv, cmd_argc);break;
-        case cwd: doCwd(cmd_argv, cmd_argc);break;
-        case epsv: doEpsv(cmd_argv, cmd_argc);break;
         case retr: doRetr(cmd_argv, cmd_argc);break;
         case stor: doStor(cmd_argv, cmd_argc);break;
-        case list: doList(cmd_argv, cmd_argc);break;
+        case ls: doList(cmd_argv, cmd_argc);break;
         case dele: doDele(cmd_argv, cmd_argc);break;
         case quit: doQuit(); break;
         case noop: break;
