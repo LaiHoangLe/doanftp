@@ -1,0 +1,84 @@
+# depslib dependency file v1.0
+1559149098 source:d:\lthtm\doanftp\connect.cpp
+	"client.h"
+	"socket.h"
+	<winsock2.h>
+
+1559184377 d:\lthtm\doanftp\client.h
+	<winsock2.h>
+
+1559141823 d:\lthtm\doanftp\socket.h
+	<winsock2.h>
+
+1560871208 source:d:\lthtm\doanftp\main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+
+1559152428 source:d:\lthtm\doanftp\socketbasic.cpp
+	"socket.h"
+	<winsock2.h>
+	"stdio.h"
+
+1560876250 source:d:\lthtm\doanftp\cmdline.cpp
+	<stdio.h>
+	<stdlib.h>
+	<cstring>
+	"client.h"
+	"socket.h"
+	"ftp.h"
+
+1559152349 source:d:\lthtm\doanftp\error_handler.cpp
+	<STDIO.H>
+	<STDLIB.H>
+
+1559149098 d:\lthtm\doanftp\connect.cpp
+	"client.h"
+	"socket.h"
+	<winsock2.h>
+
+1560876449 d:\lthtm\doanftp\ftp.h
+
+1560869007 source:d:\lthtm\doanftp\ftpclient.cpp
+	"client.h"
+	"socket.h"
+	<string.h>
+	<stdio.h>
+
+1560958832 source:d:\lthtm\doanftp - final a\connect.cpp
+	"client.h"
+	"socket.h"
+	<winsock2.h>
+
+1560959273 d:\lthtm\doanftp - final a\client.h
+	<winsock2.h>
+
+1559141823 d:\lthtm\doanftp - final a\socket.h
+	<winsock2.h>
+
+1560962157 source:d:\lthtm\doanftp - final a\ftpclient.cpp
+	"client.h"
+	"socket.h"
+	<string.h>
+	<stdio.h>
+
+1560959469 source:d:\lthtm\doanftp - final a\main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+
+1559152428 source:d:\lthtm\doanftp - final a\socketbasic.cpp
+	"socket.h"
+	<winsock2.h>
+	"stdio.h"
+
+1560963624 source:d:\lthtm\doanftp - final a\cmdline.cpp
+	<stdio.h>
+	<stdlib.h>
+	<cstring>
+	"client.h"
+	"socket.h"
+	"ftp.h"
+
+1560957543 d:\lthtm\doanftp - final a\ftp.h
+
