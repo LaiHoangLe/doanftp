@@ -10,16 +10,17 @@ bool is_logon = false;
 // khai bao cac ham se su dung
 SOCKET connect(char*,char*);
 
-void ClearScreen()
-{
-    system("cls");
-}
-
 // Hien_thi_dau_hac_lenh
 void showCmdPrompt()
 {
     printf("%s",PROMPT);
 }
+
+void ClearScreen()
+{
+    system("cls");
+}
+
 // Doc lenh nhap tu ban phim
 void readCmd(char * sCmdBuf, int buflen)
 {
@@ -107,6 +108,7 @@ void doDis(char* cmd_argv[], int cmd_argc)
         char msg[] = "QUIT";
         send_1_message(msg);
         recv_ftp_response();
+        //b_connected = false;
         is_logon = false;
     }
     else
@@ -186,7 +188,7 @@ void doMkd(char* cmd_argv[], int cmd_argc)
             printf("Chua ket noi den server!\n");
             return;
         }
-        send_2_message(cmd_argv[0],cmd_argv[1]);
+        send_2_message("mkd",cmd_argv[1]);
         recv_ftp_response();
     }
     else
@@ -204,13 +206,13 @@ void doRmd(char* cmd_argv[], int cmd_argc)
             printf("Chua ket noi den server!\n");
             return;
         }
-        send_2_message(cmd_argv[0], cmd_argv[1]);
+        send_2_message("rmd", cmd_argv[1]);
+        recv_ftp_response();
     }
     else
         {
             printf("Tham so khong hop le!\n");
         }
-    recv_ftp_response();
 }
 
 void doCwd(char* cmd_argv[], int cmd_argc)
@@ -284,10 +286,8 @@ void doList(char* cmd_argv[], int cmd_argc)
         if (tmp!=0){
             return;
         }
-        send_2_message("TCP","ACK");
-        recv_ftp_response();
-        send_1_message("nlst");
-        recv_ftp_response();
+
+        //send_1_message("nlst");
     }else{
         printf("Tham so khong hop le!\n");
     }
@@ -321,11 +321,11 @@ void doCmd(cmd_id id, char * cmd_argv[], int cmd_argc)
         case open: doOpen(cmd_argv, cmd_argc);break; //done
         case user: doUser(cmd_argv, cmd_argc);break; //done
         //case pass: doPass(cmd_argv, cmd_argc);break;
-        case disconnect: doDis(cmd_argv, cmd_argc);break; //done
+        //case disconnect: doDis(cmd_argv, cmd_argc);break; //done
         case cd: doCwd(cmd_argv, cmd_argc);break; //done
         case pwd: doPwd(cmd_argv, cmd_argc);break; //done
-        case mkd: doMkd(cmd_argv, cmd_argc);break;
-        case rmd: doRmd(cmd_argv, cmd_argc);break;
+        case mkdir: doMkd(cmd_argv, cmd_argc);break;
+        case rmdir: doRmd(cmd_argv, cmd_argc);break;
         case retr: doRetr(cmd_argv, cmd_argc);break;
         case stor: doStor(cmd_argv, cmd_argc);break;
         case ls: doList(cmd_argv, cmd_argc);break;

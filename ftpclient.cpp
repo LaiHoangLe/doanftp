@@ -1,5 +1,6 @@
-#include "client.h"
+//#include "ftp.h"
 #include "socket.h"
+#include "client.h"
 #include <string.h>
 #include <stdio.h>
 SOCKET connectsock(char* hostname, char* service);
@@ -8,7 +9,6 @@ SOCKET connectsock(char* hostname, char* service);
 bool b_connected = false;
 // tao socket local.
 SOCKET local;
-//kiem tra loi
 
 bool connect_server(char* host, char* service)
 {
@@ -23,6 +23,7 @@ bool connect_server(char* host, char* service)
         printf("Ket noi thanh cong!\n");
         b_connected = true;
         // nhan welcome message
+
     }
     return b_connected;
 }
@@ -31,9 +32,8 @@ bool is_connected()
 {
     return b_connected;
 }
-
 int send_1_message(char msg[])
-{
+ {
     char buff[512];
     sprintf(buff,"%s \r\n",msg);
     int len = strlen(buff);
@@ -48,8 +48,8 @@ int send_1_message(char msg[])
         printf("Loi gui msg!\n");
         return 0;
     }
-}
-
+ }
+//
 int send_2_message(char msg1[], char msg2[])
 {
     char file_name[512];
@@ -97,5 +97,4 @@ int recv_ftp_response()
         errinfo(-2, "Connection closed\n");
         return -2;
     }
-    return 0;
 }
