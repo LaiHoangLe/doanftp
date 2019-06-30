@@ -1,8 +1,8 @@
 //#include "ftp.h"
 #include "socket.h"
 #include "client.h"
-#include <string.h>
-#include <stdio.h>
+#include <bits/stdc++.h>
+
 SOCKET connectsock(char* hostname, char* service);
 // thuc thi giao thuc
 // kiem tra ket noi thanh cong?
@@ -97,4 +97,41 @@ int recv_ftp_response()
         errinfo(-2, "Connection closed\n");
         return -2;
     }
+}
+
+int recv_epsv()
+{
+    char buffer[512];
+    int total_byte_recv = 0;
+    int byte_recv;
+    // nhan lenh
+    byte_recv = recv(local, buffer, 512, 0);
+    while(byte_recv >0 && byte_recv!=SOCKET_ERROR)
+    {
+        total_byte_recv += byte_recv;
+        // kiem tra nhan dang ket thuc lenh
+        if(total_byte_recv>=2 && buffer[total_byte_recv-1]=='\n'&& buffer[total_byte_recv-2]=='\r')
+            break;
+        else if(total_byte_recv>=512)
+            break;
+        // Tiep tuc nhan lenh
+        byte_recv = recv(local,buffer+total_byte_recv, 1, 0);
+    }
+    buffer[byte_recv] = '\0';
+    puts(buffer);
+    int p1=0,p2=0;
+    int res = 0;
+    for (int i= byte_recv;i>=0;i--){
+        if (buffer[i]=='|' && p2 ==0){
+            p2 = i;
+        } else if (buffer[i]=='|' && p2 !=0) {
+            p1 = i;
+            break;
+        }
+    }
+    for (int i=p1+1;i<p2;i++){
+        res = res*10 + int(buffer[i]-48);
+    }
+    return res;
+
 }

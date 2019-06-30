@@ -56,11 +56,10 @@
 1559141823 d:\lthtm\doanftp - final a\socket.h
 	<winsock2.h>
 
-1561220943 source:d:\lthtm\doanftp - final a\ftpclient.cpp
+1561906923 source:d:\lthtm\doanftp - final a\ftpclient.cpp
 	"socket.h"
 	"client.h"
-	<string.h>
-	<stdio.h>
+	<bits/stdc++.h>
 
 1560959469 source:d:\lthtm\doanftp - final a\main.cpp
 	<iostream>
@@ -72,13 +71,11 @@
 	<winsock2.h>
 	"stdio.h"
 
-1561220926 source:d:\lthtm\doanftp - final a\cmdline.cpp
-	<stdio.h>
-	<stdlib.h>
-	<cstring>
+1561908003 source:d:\lthtm\doanftp - final a\cmdline.cpp
+	<bits/stdc++.h>
 	"client.h"
 	"socket.h"
 	"ftp.h"
 
-1561220885 d:\lthtm\doanftp - final a\ftp.h
+1561906860 d:\lthtm\doanftp - final a\ftp.h
 

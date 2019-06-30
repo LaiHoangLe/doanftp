@@ -8,6 +8,7 @@ int send_1_message(char msg[]);
 int send_2_message(char msg1[], char msg2[]);
 
 int recv_ftp_response();
+int recv_epsv();
 
 const char GREETING[] = "Welcome to FTP Client 1.0\nCopyright by Group2_60PM2 (Group2.60PM2@gmail.com)\n";
 const char PROMPT[] = "FTP.Client> ";
