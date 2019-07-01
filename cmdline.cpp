@@ -10,7 +10,9 @@ char* server_address;
 
 // khai bao cac ham se su dung
 SOCKET connect(char*,char*);
-SOCKET connect_to_send(char*, char*);
+
+SOCKET connect_to_send;
+bool data_connection = false;
 
 string readPort(string s)
 {
@@ -31,10 +33,10 @@ void send_EPSV(){
     char msg[] = "epsv";
     send_1_message(msg);
     int port = recv_epsv();
-    //printf("%d",port);
     char *p = reinterpret_cast<char *>(port);
-
-    connect_server(server_address,p);
+    connect_to_send = connectsock(server_address,p);
+    printf("%d",port);
+    data_connection = true;
 }
 
 // Hien_thi_dau_hac_lenh
@@ -312,8 +314,11 @@ void doList(char* cmd_argv[], int cmd_argc)
     if(cmd_argc==1)
     {
         send_EPSV();
-
+        if (!data_connection){
+            return;
+        }
         send_1_message("nlst");
+        recv_ftp_response();
     }else{
         printf("Tham so khong hop le!\n");
     }

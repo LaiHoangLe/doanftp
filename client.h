@@ -11,6 +11,7 @@
 #define CMD_UNKNOWN_ID  CMD_MAX_NUM
 #define CMD_QUIT_ID CMD_MAX_NUM + 3
 
+SOCKET connectsock(char* hostname, char* service);
 typedef void (*DO_CMD_FUNC)(char*[], int);
 
 void setCmdPrompt(const char* prompt);
