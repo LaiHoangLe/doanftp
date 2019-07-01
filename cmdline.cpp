@@ -3,6 +3,7 @@
 #include "socket.h"
 #include "ftp.h"
 
+
 using namespace std;
 
 bool is_logon = false;
@@ -14,28 +15,45 @@ SOCKET connect(char*,char*);
 SOCKET connect_to_send;
 bool data_connection = false;
 
-string readPort(string s)
+int recv_data()
 {
-    string number = "";
-
-    int last = s.find_last_of('|');
-    if(last == string::npos)
-        return "";
-
-    while(isdigit(s[last - 1])){
-        number = s[last-1] + number;
-        last--;
+    char res[100000];
+    char buffer[1024];
+    int total_byte_recv = 0;
+    int byte_recv;
+    // nhan lenh
+    byte_recv = recv(connect_to_send, buffer, 1023, 0);
+    while(byte_recv >1 && byte_recv!=SOCKET_ERROR)
+    {
+        // kiem tra nhan dang ket thuc lenh
+        buffer[byte_recv] = '\0';
+        strcat(res,buffer);
+        if(byte_recv>=2 && buffer[total_byte_recv-1]=='\n'&& buffer[total_byte_recv-2]=='\r')
+            break;
+        // Tiep tuc nhan lenh
+        byte_recv = recv(connect_to_send, buffer, 1023, 0);
+        ;
     }
-    return number;
+    puts(res);
+    if(byte_recv==SOCKET_ERROR)
+    {
+        return -1;
+    }
+}
+
+void close_data_channel(){
+    data_connection = false;
+    closesocket(connect_to_send);
 }
 
 void send_EPSV(){
     char msg[] = "epsv";
     send_1_message(msg);
     int port = recv_epsv();
-    char *p = reinterpret_cast<char *>(port);
+    char p[10];
+    sprintf(p,"%d",port);
     connect_to_send = connectsock(server_address,p);
-    printf("%d",port);
+    //printf("%d",connect_to_send);
     data_connection = true;
 }
 
@@ -97,12 +115,10 @@ void doHelp()
     printf("%15s  %12s  %12s  %12s \n", "CD", "MKDIR", "RMDIR", "DELETE");
     printf("\nChuc ban thanh cong!^^\n\n");
 }
-
 void doUnknown()
 {
     puts("Lenh khong duoc ho tro\nGo lenh help de duoc tro giup");
 }
-
 void doQuit()
 {
 	printf("Chuong trinh ket thuc\n");
@@ -182,8 +198,6 @@ void doUser(char* cmd_argv[], int cmd_argc)
     }
 }
 //done
-
-
 void doOpen(char* cmd_argv[], int cmd_argc)
 {
     if(cmd_argc == 3)
@@ -287,9 +301,13 @@ void doRetr(char* cmd_argv[], int cmd_argc)
             return;
         }
         send_EPSV();
-
-
+        if (!data_connection){
+            return;
+        }
         send_2_message("retr",cmd_argv[1]);
+        recv_ftp_response();
+        recv_data();
+        close_data_channel();
         recv_ftp_response();
     }
     else{
@@ -313,12 +331,43 @@ void doList(char* cmd_argv[], int cmd_argc)
 {
     if(cmd_argc==1)
     {
+        if(is_connected()== false)
+        {
+            printf("Chua ket noi toi Server!\n");
+            return;
+        }
         send_EPSV();
         if (!data_connection){
             return;
         }
         send_1_message("nlst");
         recv_ftp_response();
+        recv_data();
+        close_data_channel();
+        recv_ftp_response();
+    }else{
+        printf("Tham so khong hop le!\n");
+    }
+}
+//done
+void doDir(char* cmd_argv[], int cmd_argc)
+{
+    if(cmd_argc==1)
+    {
+        if(is_connected()== false)
+        {
+            printf("Chua ket noi toi Server!\n");
+            return;
+        }
+        send_EPSV();
+        if (!data_connection){
+            return;
+        }
+        send_1_message("list");
+        recv_ftp_response();
+        recv_data();
+        close_data_channel();
+
     }else{
         printf("Tham so khong hop le!\n");
     }
@@ -355,11 +404,12 @@ void doCmd(cmd_id id, char * cmd_argv[], int cmd_argc)
         //case disconnect: doDis(cmd_argv, cmd_argc);break; //done
         case cd: doCwd(cmd_argv, cmd_argc);break; //done
         case pwd: doPwd(cmd_argv, cmd_argc);break; //done
+        case dir: doDir(cmd_argv, cmd_argc);break;//done
         case mkdir: doMkd(cmd_argv, cmd_argc);break;//done
         case rmdir: doRmd(cmd_argv, cmd_argc);break;//done
         case retr: doRetr(cmd_argv, cmd_argc);break;
         case stor: doStor(cmd_argv, cmd_argc);break;
-        case ls: doList(cmd_argv, cmd_argc);break;
+        case ls: doList(cmd_argv, cmd_argc);break; //done
         case dele: doDele(cmd_argv, cmd_argc);break; //done
         case quit: doQuit(); break; //done
         case noop: break;

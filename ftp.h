@@ -15,10 +15,10 @@ const char PROMPT[] = "FTP.Client> ";
 const char SPACE[]= " ";
 // dinh nghia id cua lenh
 //
-enum cmd_id {help = 0, open, cls, user, pass, mkdir, rmdir, cd, retr, stor, dele, ls, pwd, quit, noop, unknown};
+enum cmd_id {help = 0, open, cls, user, pass, dir, mkdir, rmdir, cd, retr, stor, dele, ls, pwd, quit, noop, unknown};
 
-const char* CMD_NAME[] = {"help", "open", "cls", "user", "pass", "mkdir", "rmdir", "cd", "retr", "stor", "dele", "ls", "pwd", "quit"};
-const cmd_id CMD_ID[] = {help, open, cls, user, pass, mkdir, rmdir, cd, retr, stor, dele, ls, pwd, quit};
+const char* CMD_NAME[] = {"help", "open", "cls", "user", "pass", "dir", "mkdir", "rmdir", "cd", "retr", "stor", "dele", "ls", "pwd", "quit"};
+const cmd_id CMD_ID[] = {help, open, cls, user, pass, dir, mkdir, rmdir, cd, retr, stor, dele, ls, pwd, quit};
 bool bQuit;
 
 
